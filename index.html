@@ -58,8 +58,8 @@ input[readonly]{color:#ff7777;background:#0b0b0b;border-color:#351313;font-weigh
 .attr-row:last-child{border-bottom:0}.attr-name{color:#c7c7c7;font-size:.95rem}.attr-val{white-space:nowrap;color:#fff;font:600 .78rem ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 .empty-state{padding:14px 2px;color:var(--faint);font-style:italic}
 .info-icon{width:18px;height:18px;display:flex;align-items:center;justify-content:center;position:relative;flex:0 0 auto;border:1px solid var(--border-hot);border-radius:50%;background:#151515;color:var(--red);font:700 10px sans-serif;cursor:help}
-.info-icon:hover::after{content:"Select the rarity the item currently has. The calculator converts it back to its common base level, then shows each rarity equivalent and upgrade caps. Reminder you can only upgrade to +6 / +11 on Mythic Rarity.";position:absolute;top:27px;right:0;width:245px;padding:10px 11px;border:1px solid var(--red-dim);border-radius:5px;background:#0b0b0b;color:#ddd;font:400 12px/1.35 'Crimson Pro',serif;box-shadow:0 10px 30px #000;z-index:30}
-.attr-info-icon:hover::after{content:"Applicable damage and special attributes are always rounded UP to the next whole number in-game. For example, 21.40% and 21.95% both become 22%. Values below 1% display as 1%. Except for HP/MP/EXP ";width:285px;}
+.info-icon:hover::after{content:"Select the rarity the item currently has. The calculator converts it back to its common base level, then shows each rarity equivalent and upgrade caps.";position:absolute;top:27px;right:0;width:245px;padding:10px 11px;border:1px solid var(--red-dim);border-radius:5px;background:#0b0b0b;color:#ddd;font:400 12px/1.35 'Crimson Pro',serif;box-shadow:0 10px 30px #000;z-index:30}
+.attr-info-icon:hover::after{content:"Applicable damage and special attributes are always rounded UP to the next whole number in-game. For example, 21.40% and 21.95% both become 22%. Values below 1% display as 1%.";width:285px;}
 footer{margin-top:auto;padding:26px 20px;text-align:center;border-top:1px solid #270000;color:#777;font-size:.82rem}footer strong{color:#aaa;font-weight:400}
 @media(max-width:900px){.container{grid-template-columns:1fr;padding-top:26px}.panel{width:100%}}
 @media(max-width:560px){header{padding:0 15px}.brand span{display:none}.brand h1{font-size:.88rem}.discord-btn{padding:6px 9px}.container{padding:20px 12px 36px}.panel-body{padding:18px}.input-grid,.result-grid{grid-template-columns:1fr}.info-icon:hover::after{right:-5px;width:220px}.attr-row{align-items:flex-start;flex-direction:column;gap:3px}.attr-val{white-space:normal}}
@@ -247,7 +247,7 @@ header{padding-right:105px}
     </div>
   </section>
 </main>
-<footer>Created by: <strong>G-Datedd</strong> — Maintained by: <strong>Neko &amp; Gild</strong></footer>
+<footer>Created by: <strong>Neko &amp; Datedd</strong> — Maintained by: <strong>Gild</strong></footer>
 
 <script>
 function sum1() {
@@ -273,7 +273,8 @@ function sum1() {
   document.getElementById('legendaryResult').value = legendary;
   document.getElementById('mythicResult').value = mythic;
   document.getElementById('accessoryResult').value = mythic + 60;
-  document.getElementById('weaponResult').value = mythic + 110;
+  const weaponBonus = base <= 56 ? 105 : base >= 62 ? 110 : 105 + ((base - 56) * 5 / 6);
+  document.getElementById('weaponResult').value = Math.min(439, Math.floor(mythic + weaponBonus));
 }
 
 const attributes = {
@@ -281,19 +282,19 @@ const attributes = {
     'HP ': {value:.0117,unit:'%',min:0}, 'MP ': {value:.0205,unit:'%',min:0}, 'Extra Experience ': {value:.005,unit:'%',min:0}, 'Physical / Ice / Earth / Energy / Fire Damage ': {value:.05,unit:'%',min:0}, 'Elemental damage ': {value:.03,unit:'%',min:0}, 'Chance to deal Double damage': {value:.01,unit:'%',min:0,max:5}, 'Damage taken recouped as life': {value:.058,unit:'%',min:0}, 'Health on kill': {value:.2,unit:'',min:1}, '1H / 2H / Melee Skill': {unit:'',formula:i=>Math.min(5,Math.floor((i-1)/50)+1)}
   },
   distanceWeapons: {
-    'HP ': {value:.0117,unit:'%',min:0}, 'MP ': {value:.0205,unit:'%',min:0}, 'Extra Experience ': {value:.005,unit:'%',min:0}, 'Physical / Ice / Earth / Energy / Fire / Holy Damage ': {value:.05,unit:'%',min:0}, 'Elemental damage ': {value:.03,unit:'%',min:0}, 'Chance to deal Double damage': {value:.01,unit:'%',min:0,max:5}, 'Damage taken recouped as life': {value:.058,unit:'%',min:0}, 'Spellcost Reduction': {value:.034,unit:'%',min:0}, 'Health on kill': {value:.2,unit:'',min:1}, 'Distance': {unit:'',formula:i=>Math.floor((i-1)/50)+1}
+    'HP ': {value:.0117,unit:'%',min:0}, 'MP ': {value:.0205,unit:'%',min:0}, 'Extra Experience ': {value:.005,unit:'%',min:0}, 'Physical / Ice / Earth / Energy / Fire / Holy Damage ': {value:.05,unit:'%',min:0}, 'Elemental damage ': {value:.03,unit:'%',min:0}, 'Chance to deal Double damage': {value:.01,unit:'%',min:0,max:5}, 'Damage taken recouped as life': {value:.058,unit:'%',min:0}, 'Health on kill': {value:.2,unit:'',min:1}, 'Distance': {unit:'',formula:i=>Math.floor((i-1)/50)+1}
   },
   wands: {
     'HP ': {value:.0117,unit:'%',min:0}, 'MP ': {value:.0205,unit:'%',min:0}, 'Extra Experience ': {value:.005,unit:'%',min:0}, 'Physical / Ice / Earth / Energy / Fire / Death Damage ': {value:.05,unit:'%',min:0}, 'Elemental damage ': {value:.03,unit:'%',min:0}, 'Chance to deal Double damage': {value:.01,unit:'%',min:0,max:5}, 'Damage taken recouped as life': {value:.058,unit:'%',min:0}, 'Spellcost Reduction': {value:.034,unit:'%',min:0}, 'Health on kill': {value:.2,unit:'',min:1}, 'Magic Level': {unit:'',formula:i=>Math.floor((i-1)/50)+1}
   },
   armours: {
-    'HP ': {value:.0117,unit:'%',min:0}, 'MP ': {value:.0205,unit:'%',min:0}, 'Extra Experience ': {value:.005,unit:'%',min:0}, 'Physical Protection ': {unit:'%',formula:i=>Math.round(1+((Math.min(i,439)-1)*21/438))}, 'Elemental Protection ': {unit:'%',formula:i=>Math.round(1+((Math.min(i,439)-1)*21/438))}, 'Energy Protection ': {unit:'%',formula:i=>Math.round(1+((Math.min(i,439)-1)*21/438))}, 'Fire Protection ': {unit:'%',formula:i=>Math.round(1+((Math.min(i,439)-1)*21/438))}, 'Ice Protection ': {unit:'%',formula:i=>Math.round(1+((Math.min(i,439)-1)*21/438))}, 'Earth Protection ': {unit:'%',formula:i=>Math.round(1+((Math.min(i,439)-1)*21/438))}, 'Holy Protection ': {unit:'%',formula:i=>Math.round(1+((Math.min(i,439)-1)*21/438))}, 'Death Protection ': {unit:'%',formula:i=>Math.round(1+((Math.min(i,439)-1)*21/438))}
+    'HP ': {value:.0117,unit:'%',min:0}, 'MP ': {value:.0205,unit:'%',min:0}, 'Extra Experience ': {value:.005,unit:'%',min:0}, 'Physical / Elemental Protection ': {unit:'%',formula:i=>Math.floor(1+((Math.min(i,439)-1)*0.01))}, 'Fire / Ice / Earth / Death / Holy / Energy Protection ': {unit:'%',formula:i=>Math.floor(1+((Math.min(i,439)-1)*0.02))}
   },
   boots: {
-    'HP ': {value:.0117,unit:'%',min:0}, 'MP ': {value:.0205,unit:'%',min:0}, 'Extra Experience ': {value:.005,unit:'%',min:0}, 'Physical Protection ': {unit:'%',formula:i=>Math.round(1+((Math.min(i,439)-1)*21/438))}, 'Elemental Protection ': {unit:'%',formula:i=>Math.round(1+((Math.min(i,439)-1)*21/438))}, 'Energy Protection ': {unit:'%',formula:i=>Math.round(1+((Math.min(i,439)-1)*21/438))}, 'Fire Protection ': {unit:'%',formula:i=>Math.round(1+((Math.min(i,439)-1)*21/438))}, 'Ice Protection ': {unit:'%',formula:i=>Math.round(1+((Math.min(i,439)-1)*21/438))}, 'Earth Protection ': {unit:'%',formula:i=>Math.round(1+((Math.min(i,439)-1)*21/438))}, 'Holy Protection ': {unit:'%',formula:i=>Math.round(1+((Math.min(i,439)-1)*21/438))}, 'Death Protection ': {unit:'%',formula:i=>Math.round(1+((Math.min(i,439)-1)*21/438))}, 'Speed ': {value:.075,unit:'',min:0}, 'Increased gold Drop ': {value:.03,unit:'%',min:0}
+    'HP ': {value:.0117,unit:'%',min:0}, 'MP ': {value:.0205,unit:'%',min:0}, 'Extra Experience ': {value:.005,unit:'%',min:0}, 'Physical / Elemental Protection ': {unit:'%',formula:i=>Math.floor(1+((Math.min(i,439)-1)*0.01))}, 'Fire / Ice / Earth / Death / Holy / Energy Protection ': {unit:'%',formula:i=>Math.floor(1+((Math.min(i,439)-1)*0.02))}, 'Speed ': {value:.075,unit:'',min:0}, 'Increased gold Drop ': {value:.03,unit:'%',min:0}
   },
   shields: {
-    'HP ': {value:.0117,unit:'%',min:0}, 'MP ': {value:.0205,unit:'%',min:0}, 'Extra Experience ': {value:.005,unit:'%',min:0}, 'Physical Protection ': {unit:'%',formula:i=>Math.round(1+((Math.min(i,439)-1)*21/438))}, 'Elemental Protection ': {unit:'%',formula:i=>Math.round(1+((Math.min(i,439)-1)*21/438))}, 'Energy Protection ': {unit:'%',formula:i=>Math.round(1+((Math.min(i,439)-1)*21/438))}, 'Fire Protection ': {unit:'%',formula:i=>Math.round(1+((Math.min(i,439)-1)*21/438))}, 'Ice Protection ': {unit:'%',formula:i=>Math.round(1+((Math.min(i,439)-1)*21/438))}, 'Earth Protection ': {unit:'%',formula:i=>Math.round(1+((Math.min(i,439)-1)*21/438))}, 'Holy Protection ': {unit:'%',formula:i=>Math.round(1+((Math.min(i,439)-1)*21/438))}, 'Death Protection ': {unit:'%',formula:i=>Math.round(1+((Math.min(i,439)-1)*21/438))}, 'Increased gold Drop ': {value:.03,unit:'%',min:0}, 'Increased Healing ': {value:.028,unit:'%',min:0}, 'Shielding': {unit:'',formula:i=>Math.floor((i-1)/50)+1}
+    'HP ': {value:.0117,unit:'%',min:0}, 'MP ': {value:.0205,unit:'%',min:0}, 'Extra Experience ': {value:.005,unit:'%',min:0}, 'Physical / Elemental Protection ': {unit:'%',formula:i=>Math.floor(1+((Math.min(i,439)-1)*0.01))}, 'Fire / Ice / Earth / Death / Holy / Energy Protection ': {unit:'%',formula:i=>Math.floor(1+((Math.min(i,439)-1)*0.02))}, 'Increased gold Drop ': {value:.03,unit:'%',min:0}, 'Increased Healing ': {value:.028,unit:'%',min:0}, 'Shielding': {unit:'',formula:i=>Math.floor((i-1)/50)+1}
   },
   accessories: {
     'HP ': {value:.0117,unit:'%',min:0}, 'MP ': {value:.0205,unit:'%',min:0}, 'Extra Experience ': {value:.005,unit:'%',min:0}, 'Increased gold Drop ': {value:.03,unit:'%',min:0}, 'Increased Healing ': {value:.028,unit:'%',min:0}, 'Max HP Buff ': {value:.02,unit:'%',min:0}, 'Magic Level': {unit:'',formula:i=>Math.min(8,Math.floor((i-1)/50)+1)}, 'Distance': {unit:'',formula:i=>Math.min(8,Math.floor((i-1)/50)+1)}, 'One-handed skill': {unit:'',formula:i=>Math.min(5,Math.floor((i-1)/50)+1)}, 'Two-handed skill': {unit:'',formula:i=>Math.min(5,Math.floor((i-1)/50)+1)}
