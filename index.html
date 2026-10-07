@@ -273,7 +273,7 @@ function sum1() {
   document.getElementById('legendaryResult').value = legendary;
   document.getElementById('mythicResult').value = mythic;
   document.getElementById('accessoryResult').value = mythic + 60;
-  const weaponBonus = base <= 56 ? 105 : base >= 62 ? 110 : 105 + ((base - 56) * 5 / 6);
+  const weaponBonus = 110; document.getElementById('weaponResult').value = Math.min(439, mythic + weaponBonus);
   document.getElementById('weaponResult').value = Math.min(439, Math.floor(mythic + weaponBonus));
 }
 
